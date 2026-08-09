@@ -53,7 +53,7 @@ The infrastructure includes:
           DNS Server         AD CS             NPS/RADIUS
 
 
-```text
+
 ## 🎯 Project Objectives
 
 The main objectives of this project are to:
