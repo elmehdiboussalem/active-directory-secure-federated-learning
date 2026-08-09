@@ -33,26 +33,25 @@ The infrastructure includes:
                               Secure Aggregation
                                     │
                  ┌──────────────────┴──────────────────┐
-                 │                                     │
-        ┌────────▼────────┐                   ┌────────▼────────┐
-        │   Client / FL   │                   │   Client / FL   │
-        │     Node 01     │                   │     Node 02     │
-        └────────┬────────┘                   └────────┬────────┘
-                 │                                     │
-                 └──────────────┬──────────────────────┘
-                                │
-                         mTLS / PKI
-                                │
-                    ┌───────────▼───────────┐
-                    │    Active Directory   │
-                    │        Domain         │
-                    └───────────┬───────────┘
-                                │
-              ┌─────────────────┼─────────────────┐
-              │                 │                 │
-          DNS Server         AD CS             NPS/RADIUS
-
-
+                 │                                      │
+        ┌────────▼────────┐                    ┌────────▼────────┐
+        │   Client / FL   │                    │   Client / FL   │
+        │     Node 01     │                    │     Node 02     │
+        └────────┬────────┘                    └────────┬────────┘
+                 │                                      │
+                 └──────────────┬───────────────────────┘
+                                 │
+                          mTLS / PKI
+                                 │
+                     ┌───────────▼───────────┐
+                     │    Active Directory   │
+                     │        Domain         │
+                     └───────────┬───────────┘
+                                 │
+               ┌─────────────────┼─────────────────┐
+               │                 │                 │
+           DNS Server         AD CS             NPS/RADIUS
+```
 
 ## 🎯 Project Objectives
 
@@ -68,7 +67,6 @@ The main objectives of this project are to:
 - Perform controlled Active Directory security assessments
 - Identify common security weaknesses and apply hardening measures
 - Monitor and evaluate the security of the infrastructure
-
 
 ## 🛡️ Active Directory Security
 
@@ -151,7 +149,6 @@ The mechanism provides:
 - Protection against unauthorized clients
 
 The combination of **AD, PKI, RADIUS and mTLS** provides a layered approach to identity and access security.
-
 
 ## 🤖 Federated Learning & Secure Aggregation
 
