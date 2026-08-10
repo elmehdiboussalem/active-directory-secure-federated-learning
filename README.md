@@ -234,3 +234,42 @@ Security experiments are conducted in an isolated environment for educational an
 - Packet Tracer
 - Git
 - GitHub
+
+## 📁 Project Structure
+
+```text
+secure-ad-federated-learning/
+│
+├── README.md
+│
+├── docs/
+│   ├── architecture/
+│   ├── active-directory/
+│   ├── pki/
+│   ├── radius/
+│   ├── federated-learning/
+│   └── security-testing/
+│
+├── diagrams/
+│   ├── network-topology/
+│   ├── ad-architecture/
+│   └── federated-learning/
+│
+├── scripts/
+│   ├── powershell/
+│   ├── python/
+│   └── linux/
+│
+├── configurations/
+│   ├── active-directory/
+│   ├── network/
+│   └── security/
+│
+├── screenshots/
+│   ├── active-directory/
+│   ├── pki/
+│   ├── radius/
+│   ├── federated-learning/
+│   └── security-testing/
+│
+└── LICENSE
