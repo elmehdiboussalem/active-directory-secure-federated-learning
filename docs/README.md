@@ -3,7 +3,7 @@
 - [Laboratory Architecture](docs/architecture.md)
 - [Federated Learning](docs/federated-learning.md)
 - [Secure Aggregation](docs/secure-aggregation.md)
-- 
+  
 ### 🕵️ FL Privacy Attacks
 
 The project experimentally demonstrates the privacy leakage possible when
