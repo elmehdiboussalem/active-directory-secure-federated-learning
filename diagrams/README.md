@@ -2,10 +2,14 @@
 
 ![Architecture Overview](diagrams/architecture-overview.png)
 
-## Planned diagrams
+## 🛡️ Privacy Attack & Secure Aggregation
 
-- Active Directory architecture
-- Network topology
-- PKI architecture
-- Federated Learning architecture
-- Security architecture
+![Privacy Attack vs Secure Aggregation](diagrams/privacy-attack-vs-secagg.png)
+
+## 🤖 Federated Learning
+
+![Federated Learning Architecture](diagrams/federated-learning.png)
+
+## 🚨 Real-Time Intrusion Detection
+
+![Real-Time Intrusion Detection](diagrams/realtime-detection.png)
