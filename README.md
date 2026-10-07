@@ -1,28 +1,89 @@
 # 🔐 Secure Active Directory Infrastructure & Federated Learning
 
-A cybersecurity infrastructure project combining **Active Directory security, PKI, RADIUS, mutual TLS, Federated Learning, Secure Aggregation, and offensive security testing**.
+A security research laboratory combining **Active Directory, PKI, RADIUS, mTLS, Federated Learning, Secure Aggregation and offensive security testing** in a reproducible virtualized environment.
+
+The project was implemented on **VMware ESXi 7.0** and integrates enterprise identity infrastructure with privacy-preserving machine learning for federated intrusion detection.
+
+---
 
 ## 🎯 Project Overview
 
-This project focuses on designing and implementing a secure infrastructure environment integrating enterprise identity services with modern cybersecurity and privacy-preserving machine learning techniques.
+This project explores how **Federated Learning can be integrated into a secured Active Directory environment** while protecting both authentication and federated model updates.
 
-The lab combines:
+The laboratory combines:
 
-- Active Directory
-- DNS
-- Group Policy
-- Active Directory Certificate Services (AD CS)
-- NPS / RADIUS
-- PKI
-- Mutual TLS (mTLS)
-- Federated Learning
-- Secure Aggregation
-- Active Directory security assessment
-- Security monitoring and hardening
+* 🏢 Active Directory Domain Services
+* 🔐 Active Directory Certificate Services (AD CS)
+* 🔑 NPS / RADIUS authentication
+* 🔒 Mutual TLS (mTLS)
+* 🤖 Federated Learning with Flower
+* 🛡️ Secure Aggregation (SecAgg+)
+* 🕵️ Federated Learning privacy attacks
+* 🚨 Real-time intrusion detection
+* ⚔️ Active Directory security assessment
+* 🛡️ Security hardening and validation
+
+The project follows an experimental security approach:
+
+```text
+Active Directory Infrastructure
+            │
+            ▼
+     Security Telemetry
+            │
+            ▼
+      Federated Learning
+            │
+       ┌────┴────┐
+       │         │
+       ▼         ▼
+ Without SA    SecAgg+
+       │         │
+       ▼         ▼
+Privacy Attack  Protected
+       │         │
+       └────┬────┘
+            ▼
+   Federated Detection
+            │
+            ▼
+     Real-Time Alerts
+```
+
+---
+
+## 🏆 Key Results
+
+The experimental environment produced the following results:
+
+| Component                 |                        Result |
+| ------------------------- | ----------------------------: |
+| Security events processed |                  **826,000+** |
+| Extracted time windows    |                       **656** |
+| MITRE ATT&CK classes      |                         **9** |
+| Standardized features     |                        **29** |
+| Federated clients         |                         **3** |
+| Centralized MLP Macro F1  |                     **0.607** |
+| Real-time detector F1     |                    **≈ 0.50** |
+| FL privacy attack         | **Successfully demonstrated** |
+| Property inference        | **Successfully demonstrated** |
+| Secure Aggregation        |  **Integrated and validated** |
+| Real attack validation    | **Performed from Kali Linux** |
+
+The experiments demonstrate both the **privacy risks of federated learning without secure aggregation** and the ability of Secure Aggregation to prevent the server from directly inspecting individual client updates.
+
+---
 
 ## 🏗️ Architecture
 
-The infrastructure includes:
+The laboratory is deployed on a virtualized infrastructure and contains:
+
+* **DC01 / DC02** — redundant Active Directory Domain Controllers
+* **Windows clients** — federated learning participants
+* **FL Server** — federated coordination and model aggregation
+* **FL-ROOT-CA** — internal certificate authority
+* **NPS / RADIUS** — centralized authentication
+* **Kali Linux** — controlled offensive security testing
 
 ```text
                          ┌──────────────────────┐
@@ -30,27 +91,36 @@ The infrastructure includes:
                          │       Server         │
                          └──────────┬───────────┘
                                     │
-                              Secure Aggregation
+                             Secure Aggregation
                                     │
-                 ┌──────────────────┴──────────────────┐
-                 │                                      │
-        ┌────────▼────────┐                    ┌────────▼────────┐
-        │   Client / FL   │                    │   Client / FL   │
-        │     Node 01     │                    │     Node 02     │
-        └────────┬────────┘                    └────────┬────────┘
-                 │                                      │
-                 └──────────────┬───────────────────────┘
-                                 │
-                          mTLS / PKI
-                                 │
-                     ┌───────────▼───────────┐
-                     │    Active Directory   │
-                     │        Domain         │
-                     └───────────┬───────────┘
-                                 │
-               ┌─────────────────┼─────────────────┐
-               │                 │                 │
-           DNS Server         AD CS             NPS/RADIUS
+                 ┌──────────────────┼──────────────────┐
+                 │                  │                  │
+          ┌──────▼──────┐    ┌──────▼──────┐    ┌──────▼──────┐
+          │   Windows   │    │   Windows   │    │   Windows   │
+          │   Client 1  │    │   Client 2  │    │   Client 3  │
+          │   FL Node   │    │   FL Node   │    │   FL Node   │
+          └──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+                 │                  │                  │
+                 └──────────────────┼──────────────────┘
+                                    │
+                                  mTLS
+                                    │
+                         ┌──────────▼──────────┐
+                         │ Active Directory    │
+                         │      Domain         │
+                         └──────────┬──────────┘
+                                    │
+              ┌─────────────────────┼─────────────────────┐
+              │                     │                     │
+        ┌─────▼─────┐        ┌──────▼──────┐       ┌─────▼─────┐
+        │   DC01    │        │    AD CS    │       │ NPS/RADIUS│
+        │   DC02    │        │  FL-ROOT-CA │       │           │
+        └───────────┘        └─────────────┘       └───────────┘
+
+                         ┌──────────────┐
+                         │ Kali Linux   │
+                         │ Security Lab │
+                         └──────────────┘
 ```
 
 ## 🎯 Project Objectives
