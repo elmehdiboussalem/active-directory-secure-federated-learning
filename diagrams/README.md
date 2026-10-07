@@ -1,6 +1,6 @@
-# 🏗️ Architecture Diagrams
+## 🏗️ Architecture
 
-This directory contains architecture and network topology diagrams used in the project.
+![Architecture Overview](diagrams/architecture-overview.png)
 
 ## Planned diagrams
 
