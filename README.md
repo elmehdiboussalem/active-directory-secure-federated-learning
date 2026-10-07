@@ -122,6 +122,193 @@ The laboratory is deployed on a virtualized infrastructure and contains:
                          │ Security Lab │
                          └──────────────┘
 ```
+## 📊 Experimental Results
+
+### Dataset & Preprocessing
+
+The federated intrusion detection dataset was generated from **Mordor / OTRF security telemetry**.
+
+The preprocessing pipeline produced:
+
+| Metric                            |             Result |
+| --------------------------------- | -----------------: |
+| Security events parsed            |       **826,000+** |
+| Extracted time windows            |            **656** |
+| Final downsampled windows         |            **227** |
+| MITRE ATT&CK techniques / classes |              **9** |
+| Standardized features             |             **29** |
+| Generated dataset files           | **6 `.npz` files** |
+
+The dataset represents multiple attack techniques and is distributed across three federated clients using a **non-IID configuration**.
+
+---
+
+### 🧠 Machine Learning Results
+
+A centralized MLP was first trained as a baseline before federated training.
+
+**Architecture:**
+
+```text
+29 input features
+       │
+       ▼
+   Dense 64
+       │
+       ▼
+   Dense 32
+       │
+       ▼
+   Dense 9
+       │
+       ▼
+   MITRE ATT&CK classes
+```
+
+Training configuration:
+
+| Parameter            |       Value |
+| -------------------- | ----------: |
+| Input features       |      **29** |
+| Hidden layers        | **64 → 32** |
+| Output classes       |       **9** |
+| Training epochs      |     **100** |
+| Centralized Macro F1 |   **0.607** |
+| Federated clients    |       **3** |
+
+The centralized model provides a baseline for evaluating the federated learning experiments.
+
+---
+
+### 🤖 Federated Learning
+
+The federated environment uses **three Windows clients** connected to a centralized Flower server.
+
+Each client trains locally on its own dataset and sends model updates to the federated server.
+
+The data distribution is intentionally **non-IID**: each client observes only a subset of the nine attack classes.
+
+This configuration makes the experiment closer to a realistic distributed security environment, but also makes federated convergence more difficult.
+
+---
+
+### 🕵️ Privacy Attack Without Secure Aggregation
+
+The project demonstrates a security weakness of standard Federated Learning when the aggregation server can inspect individual client updates.
+
+An **honest-but-curious server** was implemented to record individual model updates during training.
+
+For each round, the server could access the individual tensors of every client:
+
+```text
+fc1.weight
+fc1.bias
+fc2.weight
+fc2.bias
+fc3.weight
+fc3.bias
+```
+
+The experiment generated **30 rounds of individual client updates**.
+
+The recorded updates were then analyzed using:
+
+* L2 norms
+* mean / standard deviation
+* client distance matrices
+* final-layer deviation analysis
+
+A **property inference attack** was also performed.
+
+The attack successfully reconstructed information about the local classes present on individual clients.
+
+This demonstrates that **mTLS protects model updates during transport, but does not prevent a trusted aggregation server from inspecting decrypted updates at its endpoint**.
+
+---
+
+### 🛡️ Secure Aggregation
+
+To mitigate this information leakage, **Secure Aggregation (SecAgg+)** was integrated into the federated training pipeline.
+
+With Secure Aggregation enabled:
+
+```text
+Client 1 ──┐
+Client 2 ──┼──► Masked Updates ──► Aggregation
+Client 3 ──┘
+```
+
+The server receives only the protected aggregate rather than the individual client model updates.
+
+The SecAgg implementation was validated with a dedicated unit test and integrated into the live federated training environment.
+
+The replay of previously demonstrated privacy attacks after masking no longer provided the same direct visibility into individual client updates.
+
+---
+
+### 🚨 Real-Time Detection
+
+The federated model was subsequently deployed as a **real-time intrusion detection component** on the Windows clients.
+
+The detector processes Windows security telemetry and evaluates activity against the federated model.
+
+The system was validated against a **real attack launched from Kali Linux**.
+
+The resulting real-time detector achieved an approximate:
+
+> **Macro F1 ≈ 0.50**
+
+This result demonstrates the feasibility of using the federated model for live detection, while also showing that additional data and model optimization are required before considering the detector production-ready.
+
+---
+
+### ⚔️ Active Directory Security Validation
+
+The laboratory was also used to reproduce several Active Directory attack techniques in a controlled environment:
+
+| Attack / Technique | Validation |
+| ------------------ | ---------- |
+| BloodHound         | ✅          |
+| Pass-the-Hash      | ✅          |
+| AS-REP Roasting    | ✅          |
+| Kerberoasting      | ✅          |
+| LLMNR poisoning    | ✅          |
+| AD CS ESC8         | ✅          |
+| Golden Ticket      | ✅          |
+
+The corresponding defensive measures were then evaluated, including:
+
+* Credential Guard / RunAsPPL
+* NTLM restriction
+* LLMNR disabling
+* SMB signing
+* LAPS
+* gMSA / AES
+* removal of unnecessary SPNs
+* AD CS web enrollment hardening
+* double `krbtgt` rotation
+* DNSSEC
+* tiered administration
+
+---
+
+## ⚠️ Interpretation of the Results
+
+The experiments demonstrate three complementary points:
+
+**1. Federated Learning improves data locality**
+
+Raw security telemetry does not need to be centralized for model training.
+
+**2. Federated Learning alone does not guarantee privacy**
+
+Without Secure Aggregation, an aggregation server can inspect individual model updates and potentially infer information about the local training data.
+
+**3. Secure Aggregation reduces this visibility**
+
+SecAgg+ changes what the server can observe by preventing direct inspection of individual client updates.
+
+At the same time, the experiments revealed limitations, particularly the difficulty of training under the strongly non-IID data distribution and the relatively low F1 of the real-time detector.
 
 ## 🎯 Project Objectives
 
